@@ -25,6 +25,19 @@ io.on('connection', (socket) => {
   //   text: 'Server to client message.',
   //   createdAt: 123
   // });
+  //socket.emit from Admin text welcome to chat app
+  //socket.broadcast from Admin welcome new user joined.
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcome to the chat app.',
+    createdAt: new Date().getTime()
+  });
+  
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined chat.',
+    createdAt: new Date().getTime()
+  });
 
   //socket.on listens for event.
   socket.on('createMessage', (message) => {
@@ -34,6 +47,12 @@ io.on('connection', (socket) => {
       text: message.text,
       createdAt: new Date().getTime()
     });
+    //sends to everyone but this socket.
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // });
   });
 
   socket.on('disconnect', () => {
